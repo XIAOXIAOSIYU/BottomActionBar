@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BottomActionBar</string>
+    <string name="favorite_button">Favorite Button</string>
+    <string name="history_button">History Button</string>
+    <string name="home_button">Home Button</string>
+    <string name="search_button">Search Button</string>
+    <string name="user_button">User Button</string>
+    <string name="searching_page">Searching Page</string>
+    <string name="user_page">User Page</string>
+    <string name="favorite_page">Favorite Page</string>
+    <string name="history_page">History Page</string>
+    <string name="home_page">Home Page</string>
+    <string name="main_activity">Main Activity</string>
+</resources>
