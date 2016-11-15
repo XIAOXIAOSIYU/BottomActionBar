@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jackzhao.www.bottomactionbar.activities.Favorite">
-    <include layout="@layout/activity_toolbar_bottom"></include>
 
     <TextView
         android:text="@string/favorite_page"
@@ -14,4 +13,14 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/textView3" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.jackzhao.www.bottomactionbar.components.toolbar_bottom_fragment"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/fragment_toolbar_bottom"
+        tools:layout="@layout/bottom_toolbar" />
+
 </RelativeLayout>

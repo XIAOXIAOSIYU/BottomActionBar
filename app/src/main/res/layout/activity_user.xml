@@ -5,13 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jackzhao.www.bottomactionbar.activities.User">
-    <include layout="@layout/activity_toolbar_bottom"></include>
 
     <TextView
-        android:text="@string/user_page"
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView4" />
+        android:layout_centerVertical="true"
+        android:text="@string/user_page" />
+
+    <fragment
+        android:id="@+id/fragment_toolbar_bottom"
+        android:name="com.jackzhao.www.bottomactionbar.components.toolbar_bottom_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        tools:layout="@layout/bottom_toolbar" />
+
 </RelativeLayout>
