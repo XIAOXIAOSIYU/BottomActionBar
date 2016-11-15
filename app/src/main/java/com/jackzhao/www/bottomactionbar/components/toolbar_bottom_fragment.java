@@ -48,6 +48,11 @@ public class toolbar_bottom_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(bottom_toolbar, container, false);
+        this.initToolbarButtons(view);
+        return view;
+    }
+
+    private void initToolbarButtons(View view) {
 
         btn_search = (ImageView) view.findViewById(R.id.btn_search);
         btn_history = (ImageView) view.findViewById(R.id.btn_history);
@@ -99,9 +104,6 @@ public class toolbar_bottom_fragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        return view;
     }
-
 
 }

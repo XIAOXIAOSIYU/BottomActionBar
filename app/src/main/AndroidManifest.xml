@@ -20,7 +20,6 @@
         <activity android:name=".activities.Favorite" />
         <activity android:name=".activities.User" />
         <activity android:name=".activities.Search" />
-        <activity android:name=".components.toolbar_bottom"></activity>
     </application>
 
 </manifest>
