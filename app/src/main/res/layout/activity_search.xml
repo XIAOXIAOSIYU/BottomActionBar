@@ -1,26 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jackzhao.www.bottomactionbar.activities.Search">
 
-    <TextView
-        android:text="@string/searching_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/textView5" />
-
-    <fragment
+    <LinearLayout
+        android:id="@+id/layout_searching"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#47CDC5"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/layout_search_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@layout/searching_input_box_border"
+            android:orientation="horizontal"
+            android:padding="1dp">
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/string_icon_desc_search"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_search_black_24dp" />
+
+            <EditText
+                android:id="@+id/txt_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/string_searching"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_location_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@layout/searching_input_box_border"
+            android:orientation="horizontal"
+            android:padding="1dp">
+
+            <ImageView
+                android:id="@+id/img_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/string_icon_location"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+            <EditText
+                android:id="@+id/txt_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/string_location"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_items_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fragment_toolbar_bottom"
+        android:layout_below="@+id/layout_searching"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ListView
+            android:id="@+id/company_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragment_toolbar_bottom"
         android:name="com.jackzhao.www.bottomactionbar.components.toolbar_bottom_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/fragment_toolbar_bottom"
         tools:layout="@layout/bottom_toolbar" />
 
 </RelativeLayout>

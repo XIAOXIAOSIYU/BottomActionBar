@@ -14,4 +14,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="string_location">位置</string>
+    <string name="string_searching">名稱</string>
+    <string name="string_icon_desc_search">輸入您查詢的關鍵字</string>
+    <string name="string_icon_location">輸入您要查詢的位置</string>
 </resources>

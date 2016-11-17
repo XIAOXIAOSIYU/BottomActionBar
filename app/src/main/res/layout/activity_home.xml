@@ -43,7 +43,8 @@
                     android:layout_height="40dp"
                     android:layout_weight="6"
                     android:background="#fff"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:focusable="false" />
 
                 <ImageView
                     android:id="@+id/imageView3"
