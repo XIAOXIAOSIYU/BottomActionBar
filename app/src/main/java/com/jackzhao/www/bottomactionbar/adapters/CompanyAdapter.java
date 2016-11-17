@@ -5,14 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jackzhao.www.bottomactionbar.R;
+import com.jackzhao.www.bottomactionbar.utils.GetImageAsyncTaskHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CompanyAdapter extends BaseAdapter {
 
@@ -52,15 +53,20 @@ public class CompanyAdapter extends BaseAdapter {
         View listview = inflater.inflate(R.layout.activity_listview_item_company, viewGroup, false);
 
         try {
-            JSONArray company = (JSONArray) jsonArray.get(position);
+            JSONObject company = (JSONObject) jsonArray.get(position);
 
-            ImageView image = (ImageView) listview.findViewById(R.id.img_person);
-            TextView lb_person_name = (TextView) listview.findViewById(R.id.lb_person_name);
-            TextView lb_person_title = (TextView) listview.findViewById(R.id.lb_person_title);
-            Button button = (Button) listview.findViewById(R.id.btn_details);
+            ImageView image = (ImageView) listview.findViewById(R.id.img_company);
+            TextView lb_company = (TextView) listview.findViewById(R.id.lb_company);
+            TextView lb_company_ename = (TextView) listview.findViewById(R.id.lb_company_ename);
 
-            String company_name = company.getString(1);
-            lb_person_name.setText(company_name);
+            String company_image = company.getString("ImageURL");
+            new GetImageAsyncTaskHelper(image).execute(company_image);
+
+            String company_name = company.getString("CName");
+            lb_company.setText(company_name);
+
+            String company_ename = company.getString("EName");
+            lb_company_ename.setText(company_ename);
 
         } catch (JSONException e) {
             e.printStackTrace();

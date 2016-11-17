@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.jackzhao.www.bottomactionbar.R;
@@ -11,7 +12,6 @@ import com.jackzhao.www.bottomactionbar.adapters.CompanyAdapter;
 import com.jackzhao.www.bottomactionbar.webservices.CompanyWebServices;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 public class Search extends AppCompatActivity {
 
@@ -23,16 +23,19 @@ public class Search extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         lv_company = (ListView) findViewById(R.id.company_list);
 
-        String keys = "food";
-        String location = "ros";
-        String latitude = "118";
-        String longitude = "-34";
-        String count = "1";
+        EditText txt_keys =(EditText)findViewById(R.id.txt_search);
+        EditText txt_location =(EditText)findViewById(R.id.txt_location);
 
-        new AsyncCompanies().execute(keys, location, latitude, longitude, count);
+        String keys = "美食";
+        String location = "pasadena";
+        String longitude = "-118";
+        String latitude = "34";
+        String count = "0";
+
+        new AsyncCompanies().execute(keys, location, longitude, latitude, count);
     }
 
-    public class AsyncCompanies extends AsyncTask<String, Void, String> {
+    public class AsyncCompanies extends AsyncTask<String, Void, JSONArray> {
 
         private final ProgressDialog dialog = new ProgressDialog(Search.this);
 
@@ -44,30 +47,24 @@ public class Search extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String response) {
+        protected void onPostExecute(JSONArray response) {
             super.onPostExecute(response);
 
-            JSONArray array = null;
-            try {
-                array = new JSONArray(response);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            CompanyAdapter adapter = new CompanyAdapter(Search.this, array);
+            CompanyAdapter adapter = new CompanyAdapter(Search.this, response);
             lv_company.setAdapter(adapter);
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected JSONArray doInBackground(String... strings) {
 
             String keys = strings[0];
             String location = strings[1];
-            String latitude = strings[2];
-            String longitude = strings[3];
+            String longitude = strings[2];
+            String latitude = strings[3];
             String count = strings[4];
 
             CompanyWebServices webServices = new CompanyWebServices();
-            String companies = webServices.GetCompanies(keys, location, latitude, longitude, count);
+            JSONArray companies = webServices.GetCompanies(keys, location, longitude, latitude, count);
             return companies;
 
         }

@@ -41,7 +41,8 @@
                 android:inputType="textPersonName"
                 android:text="@string/string_searching"
                 android:textColor="#666666"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:focusable="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,7 +70,8 @@
                 android:inputType="textPersonName"
                 android:text="@string/string_location"
                 android:textColor="#666666"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:focusable="false" />
 
         </LinearLayout>
 
