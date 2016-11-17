@@ -10,6 +10,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.List;
 
 public class BaseWebServices {
 
@@ -18,7 +19,7 @@ public class BaseWebServices {
     public static String ExecuteString(String soap_action,
                                        String soap_url,
                                        String soap_method_name,
-                                       PropertyInfo params) {
+                                       List<PropertyInfo> params) {
 
         SoapSerializationEnvelope envelope = initializeEnvelope(soap_method_name, params);
         initializeTransport(envelope, soap_action, soap_url);
@@ -32,7 +33,7 @@ public class BaseWebServices {
     public static JSONObject ExecuteJSONObject(String soap_action,
                                                String soap_url,
                                                String soap_method_name,
-                                               PropertyInfo params) {
+                                               List<PropertyInfo> params) {
 
         SoapSerializationEnvelope envelope = initializeEnvelope(soap_method_name, params);
         initializeTransport(envelope, soap_action, soap_url);
@@ -50,12 +51,11 @@ public class BaseWebServices {
      *
      *
      */
-    private static SoapSerializationEnvelope initializeEnvelope(String soap_method_name, PropertyInfo params) {
+    private static SoapSerializationEnvelope initializeEnvelope(String soap_method_name, List<PropertyInfo> params) {
 
         SoapObject request = new SoapObject(SOAP_NAMESPACE, soap_method_name);
-        if (params != null) {
-            request.addProperty(params);
-        }
+        additionalPropertyInfo(request, params);
+
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
         envelope.setOutputSoapObject(request);
@@ -81,6 +81,18 @@ public class BaseWebServices {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    private static void additionalPropertyInfo(SoapObject request, List<PropertyInfo> params) {
+
+        int size = params.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                PropertyInfo pi = params.get(i);
+                request.addProperty(pi);
+            }
         }
 
     }

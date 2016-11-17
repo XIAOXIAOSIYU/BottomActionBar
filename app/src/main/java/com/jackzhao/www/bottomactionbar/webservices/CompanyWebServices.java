@@ -1,8 +1,12 @@
 package com.jackzhao.www.bottomactionbar.webservices;
 
 import com.jackzhao.www.bottomactionbar.models.Company;
+
 import org.json.JSONObject;
 import org.ksoap2.serialization.PropertyInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompanyWebServices extends BaseWebServices {
 
@@ -17,32 +21,39 @@ public class CompanyWebServices extends BaseWebServices {
         String SOAP_ACTION = "http://tempuri.org/IGetFirstMenu/GetSearchResults";
         String SOAP_METHOD_NAME = "GetSearchResults";
 
-        PropertyInfo pi_keys= new PropertyInfo();
+        PropertyInfo pi_keys = new PropertyInfo();
         pi_keys.setName("text");
         pi_keys.setValue(searching_keys);
         pi_keys.setType(String.class);
 
-        PropertyInfo pi_city= new PropertyInfo();
+        PropertyInfo pi_city = new PropertyInfo();
         pi_city.setName("city");
         pi_city.setValue(searching_locations);
         pi_city.setType(String.class);
 
-        PropertyInfo pi_longitude= new PropertyInfo();
+        PropertyInfo pi_longitude = new PropertyInfo();
         pi_longitude.setName("longitudeString");
         pi_longitude.setValue(longitude);
         pi_longitude.setType(String.class);
 
-        PropertyInfo pi_latitude= new PropertyInfo();
+        PropertyInfo pi_latitude = new PropertyInfo();
         pi_latitude.setName("latitudeString");
         pi_latitude.setValue(latitude);
         pi_latitude.setType(String.class);
 
-        PropertyInfo pi_count= new PropertyInfo();
+        PropertyInfo pi_count = new PropertyInfo();
         pi_count.setName("count");
         pi_count.setValue(array_count);
         pi_count.setType(String.class);
 
-        String companies = this.ExecuteString(SOAP_ACTION, SOAP_URL, SOAP_METHOD_NAME);
+        List<PropertyInfo> pis = new ArrayList<>();
+        pis.add(pi_keys);
+        pis.add(pi_city);
+        pis.add(pi_latitude);
+        pis.add(pi_longitude);
+        pis.add(pi_city);
+
+        String companies = this.ExecuteString(SOAP_ACTION, SOAP_URL, SOAP_METHOD_NAME, pis);
         return companies;
 
     }
@@ -52,9 +63,9 @@ public class CompanyWebServices extends BaseWebServices {
         String SOAP_URL_COMPANY = "http://iccyp.com/GetFirstMenu.svc/json/searchresults";
         String SOAP_ACTION_COMPANY = "http://tempuri.org/IGetFirstMenu/GetListResponse";
         String SOAP_METHOD_NAME = "GetListResponse";
-
+        List<PropertyInfo> pis = new ArrayList<>();
         Company company = new Company();
-        JSONObject json = this.ExecuteJSONObject(SOAP_ACTION_COMPANY, SOAP_URL_COMPANY, SOAP_METHOD_NAME);
+        JSONObject json = this.ExecuteJSONObject(SOAP_ACTION_COMPANY, SOAP_URL_COMPANY, SOAP_METHOD_NAME, pis);
         return company;
 
     }
