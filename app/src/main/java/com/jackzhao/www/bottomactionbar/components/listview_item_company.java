@@ -10,6 +10,6 @@ public class listview_item_company extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview_item_company);
+        setContentView(R.layout.activity_company_listview_item);
     }
 }

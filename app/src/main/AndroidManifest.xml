@@ -22,7 +22,8 @@
         <activity android:name=".activities.Favorite" />
         <activity android:name=".activities.User" />
         <activity android:name=".activities.Search" />
-        <activity android:name=".components.listview_item_company"></activity>
+        <activity android:name=".components.listview_item_company" />
+        <activity android:name=".activities.Details"></activity>
     </application>
 
 </manifest>

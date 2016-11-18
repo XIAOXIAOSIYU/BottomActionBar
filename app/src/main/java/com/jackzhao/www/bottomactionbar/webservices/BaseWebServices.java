@@ -33,7 +33,7 @@ public class BaseWebServices {
      * String SOAP_ACTION = "http://tempuri.org/IGetFirstMenu/GetSearchResults";
      * String SOAP_METHOD_NAME = "GetSearchResults";
      */
-    public static String ExecuteString(String soap_action,
+    public static String CallWebServicesWithSOAP(String soap_action,
                                        String soap_url,
                                        String soap_method_name,
                                        List<PropertyInfo> params) {
@@ -73,7 +73,7 @@ public class BaseWebServices {
         return json;
     }
 
-    public static JSONObject ExecuteWCFWithWSDL(String wsdl_path) {
+    public static JSONObject CallWCFServicesWithWSDL(String wsdl_path) {
 
         JSONObject object = new JSONObject();
 

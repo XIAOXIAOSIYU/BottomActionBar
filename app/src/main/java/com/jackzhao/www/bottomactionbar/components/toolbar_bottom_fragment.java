@@ -17,7 +17,7 @@ import com.jackzhao.www.bottomactionbar.activities.Home;
 import com.jackzhao.www.bottomactionbar.activities.Search;
 import com.jackzhao.www.bottomactionbar.activities.User;
 
-import static com.jackzhao.www.bottomactionbar.R.layout.bottom_toolbar;
+import static com.jackzhao.www.bottomactionbar.R.layout.fragment_bottom_toolbar;
 
 public class toolbar_bottom_fragment extends Fragment {
 
@@ -47,7 +47,7 @@ public class toolbar_bottom_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(bottom_toolbar, container, false);
+        View view = inflater.inflate(fragment_bottom_toolbar, container, false);
         this.initToolbarButtons(view);
         return view;
     }

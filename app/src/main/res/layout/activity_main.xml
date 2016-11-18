@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/fragment_toolbar_bottom"
-        tools:layout="@layout/bottom_toolbar" />
+        tools:layout="@layout/fragment_bottom_toolbar" />
 
     <ImageView
         app:srcCompat="@drawable/hizologo"
