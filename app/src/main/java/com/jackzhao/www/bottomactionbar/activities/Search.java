@@ -42,8 +42,8 @@ public class Search extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //dialog.setMessage("數據加載中......");
-            //dialog.show();
+            dialog.setMessage("數據加載中......");
+            dialog.show();
         }
 
         @Override
@@ -52,6 +52,8 @@ public class Search extends AppCompatActivity {
 
             CompanyAdapter adapter = new CompanyAdapter(Search.this, response);
             lv_company.setAdapter(adapter);
+
+            dialog.dismiss();
         }
 
         @Override
