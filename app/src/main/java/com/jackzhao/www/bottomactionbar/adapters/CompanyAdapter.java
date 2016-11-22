@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.jackzhao.www.bottomactionbar.R;
 import com.jackzhao.www.bottomactionbar.activities.Details;
+import com.jackzhao.www.bottomactionbar.utils.Common;
 import com.jackzhao.www.bottomactionbar.utils.GetImageAsyncTaskHelper;
 
 import org.json.JSONArray;
@@ -89,7 +90,7 @@ public class CompanyAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, Details.class);
-                    intent.putExtra("CompanyID", Company_Id);
+                    intent.putExtra(Common.BOUNDLE_COMPANY_ID, Company_Id);
                     context.startActivity(intent);
                 }
             });

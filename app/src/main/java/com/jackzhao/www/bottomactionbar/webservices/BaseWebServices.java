@@ -27,16 +27,14 @@ public class BaseWebServices {
      * @param soap_url
      * @param soap_method_name
      * @param params
-     * @return
-     *
-     * String SOAP_URL = "http://iccyp.com/GetFirstMenu.svc";
+     * @return String SOAP_URL = "http://iccyp.com/GetFirstMenu.svc";
      * String SOAP_ACTION = "http://tempuri.org/IGetFirstMenu/GetSearchResults";
      * String SOAP_METHOD_NAME = "GetSearchResults";
      */
     public static String CallWebServicesWithSOAP(String soap_action,
-                                       String soap_url,
-                                       String soap_method_name,
-                                       List<PropertyInfo> params) {
+                                                 String soap_url,
+                                                 String soap_method_name,
+                                                 List<PropertyInfo> params) {
 
         SoapSerializationEnvelope envelope = initializeEnvelope(soap_method_name, params);
         initializeTransport(envelope, soap_action, soap_url);
@@ -84,7 +82,7 @@ public class BaseWebServices {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = reader.readLine();
             object = new JSONObject(line);
-
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

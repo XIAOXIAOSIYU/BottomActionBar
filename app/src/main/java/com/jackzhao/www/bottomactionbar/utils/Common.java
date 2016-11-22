@@ -6,5 +6,6 @@ package com.jackzhao.www.bottomactionbar.utils;
 
 public class Common {
 
+    public static final String BOUNDLE_COMPANY_ID = "Company_Id";
 
 }

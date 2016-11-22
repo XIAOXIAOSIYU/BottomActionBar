@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_company_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jackzhao.www.bottomactionbar.activities.Details">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_company_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#47CDC5"
+        android:paddingRight="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_arrow_back_white_36dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="商家信息"
+                android:textColor="@android:color/background_light"
+                android:textSize="18sp"
+                android:id="@+id/lb_company_name" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_share_white_36dp" />
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/layout_company_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fragment_toolbar_bottom"
+        android:layout_below="@+id/toolbar_company_details"
+        android:layout_centerHorizontal="true">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/img_company_details_main_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        app:srcCompat="@drawable/company_details_image_holder" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="#00000000"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lb_company_english_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="16dp"
+                            android:textColor="@android:color/background_light"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/lb_company_tags"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="16dp"
+                            android:textColor="@android:color/background_light" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/label_space"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_float_company_details_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                app:backgroundTint="@color/colorAccent"
+                app:layout_anchor="@+id/img_company_details_main_image"
+                app:layout_anchorGravity="bottom|right"
+                app:srcCompat="@drawable/ic_phone_white_36dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_float_company_details_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="90dp"
+                android:layout_marginRight="90dp"
+                android:clickable="true"
+                app:layout_anchor="@+id/img_company_details_main_image"
+                app:layout_anchorGravity="bottom|right"
+                app:srcCompat="@drawable/ic_favorite_border_white_36dp"
+                app:backgroundTint="@android:color/holo_green_light" />
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </ScrollView>
+
+    <fragment
+        android:id="@+id/fragment_toolbar_bottom"
+        android:name="com.jackzhao.www.bottomactionbar.components.toolbar_bottom_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        tools:layout="@layout/fragment_bottom_toolbar" />
+
+</RelativeLayout>
