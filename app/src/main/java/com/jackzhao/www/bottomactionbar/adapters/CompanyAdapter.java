@@ -2,9 +2,6 @@ package com.jackzhao.www.bottomactionbar.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.DecimalFormat;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +11,7 @@ import android.widget.TextView;
 
 import com.jackzhao.www.bottomactionbar.R;
 import com.jackzhao.www.bottomactionbar.activities.Details;
+import com.jackzhao.www.bottomactionbar.utils.Common;
 import com.jackzhao.www.bottomactionbar.utils.GetImageAsyncTaskHelper;
 
 import org.json.JSONArray;
@@ -29,7 +27,6 @@ public class CompanyAdapter extends BaseAdapter {
         this.jsonArray = _jsonArray;
         this.context = _context;
     }
-
 
     @Override
     public int getCount() {
@@ -52,7 +49,6 @@ public class CompanyAdapter extends BaseAdapter {
         return 0;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -80,16 +76,16 @@ public class CompanyAdapter extends BaseAdapter {
             lb_company.setText(company_name);
             lb_company_ename.setText(company_ename);
 
-            double distance = Double.parseDouble(company.getString("QueryDistance"));
-            DecimalFormat df = new DecimalFormat("0.00");
-            lb_company_distance.setText(df.format(distance) + "m");
+            //double distance = Double.parseDouble(company.getString("QueryDistance"));
+            //DecimalFormat df = new DecimalFormat("0.00");
+            //lb_company_distance.setText(df.format(distance) + "m");
 
             final int Company_Id = Integer.parseInt(company.getString("CID"));
             img_details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, Details.class);
-                    intent.putExtra("CompanyID", Company_Id);
+                    intent.putExtra(Common.BOUNDLE_COMPANY_ID, Company_Id);
                     context.startActivity(intent);
                 }
             });

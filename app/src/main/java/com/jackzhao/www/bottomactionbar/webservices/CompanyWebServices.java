@@ -45,7 +45,7 @@ public class CompanyWebServices extends BaseWebServices {
 
         try {
 
-            JSONObject response = object.getJSONArray("GetSearchResultsResult").getJSONObject(0);
+            JSONObject response = object.getJSONArray("GetDetailListResult").getJSONObject(0);
             company.setBranchID(Integer.parseInt(response.getString("BranchID")));
             company.setChineseName(response.getString("ChineseName"));
             company.setEnglishName(response.getString("EnglishName"));
@@ -62,7 +62,7 @@ public class CompanyWebServices extends BaseWebServices {
             company.setState(response.getString("State"));
             company.setOpenHour(response.getString("OpenHour"));
             company.setTags(response.getString("Tags"));
-            company.setListID(response.getString("listID"));
+            company.setListID(response.getString("ListID"));
             company.setAboutUsDesc(response.getString("AboutUsDesc"));
             company.setAboutUsTitle(response.getString("AboutUsTitle"));
 
