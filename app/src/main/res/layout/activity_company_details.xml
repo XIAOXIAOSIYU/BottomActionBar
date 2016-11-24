@@ -22,15 +22,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_arrow_back_white_36dp" />
+                app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
+                android:layout_weight="120"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:text="商家信息"
@@ -39,10 +39,10 @@
                 android:id="@+id/lb_company_name" />
 
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_share_white_36dp" />
+                app:srcCompat="@drawable/ic_share_white_24dp" />
 
         </LinearLayout>
 

@@ -1,25 +1,58 @@
 package com.jackzhao.www.bottomactionbar.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Company {
 
-    public int BranchID ;
-    public String Street ;
-    public String City ;
-    public String State ;
-    public String ZipCode ;
-    public String Phone ;
-    public String Fax ;
-    public String OpenHour ;
-    public String Latitude ;
-    public String Longitude ;
-    public String EnglishName ;
-    public String ChineseName ;
-    public String WebSite ;
-    public String Email ;
-    public String AboutUsTitle ;
-    public String AboutUsDesc ;
-    public String ListID ;
-    public String Tags ;
+    public int BranchID;
+    public String Street;
+    public String City;
+    public String State;
+    public String ZipCode;
+    public String Phone;
+    public String Fax;
+    public String OpenHour;
+    public String Latitude;
+    public String Longitude;
+    public String EnglishName;
+    public String ChineseName;
+    public String WebSite;
+    public String Email;
+    public String AboutUsTitle;
+    public String AboutUsDesc;
+    public String ListID;
+    public String Tags;
+
+    public Company() {
+
+    }
+
+    public Company(JSONObject response) {
+        try {
+            this.setBranchID(Integer.parseInt(response.getString("BranchID")));
+            this.setChineseName(response.getString("ChineseName"));
+            this.setEnglishName(response.getString("EnglishName"));
+            this.setPhone(response.getString("Phone"));
+            this.setStreet(response.getString("Street"));
+            this.setCity(response.getString("City"));
+            this.setFax(response.getString("Fax"));
+            this.setLatitude(response.getString("Latitude"));
+            this.setLongitude(response.getString("Longitude"));
+            this.setOpenHour(response.getString("OpenHour"));
+            this.setWebSite(response.getString("WebSite"));
+            this.setEmail(response.getString("Email"));
+            this.setZipCode(response.getString("ZipCode"));
+            this.setState(response.getString("State"));
+            this.setOpenHour(response.getString("OpenHour"));
+            this.setTags(response.getString("Tags"));
+            this.setListID(response.getString("ListID"));
+            this.setAboutUsDesc(response.getString("AboutUsDesc"));
+            this.setAboutUsTitle(response.getString("AboutUsTitle"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getBranchID() {
         return BranchID;
@@ -164,4 +197,5 @@ public class Company {
     public void setTags(String tags) {
         Tags = tags;
     }
+
 }

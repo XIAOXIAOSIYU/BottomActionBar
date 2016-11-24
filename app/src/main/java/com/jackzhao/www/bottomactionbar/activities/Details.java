@@ -8,17 +8,23 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.jackzhao.www.bottomactionbar.R;
+import com.jackzhao.www.bottomactionbar.adapters.CompanyAdapter;
 import com.jackzhao.www.bottomactionbar.models.Company;
 import com.jackzhao.www.bottomactionbar.utils.AppSingleton;
 import com.jackzhao.www.bottomactionbar.utils.Common;
 import com.jackzhao.www.bottomactionbar.webservices.CompanyWebServices;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Details extends AppCompatActivity {
@@ -47,34 +53,55 @@ public class Details extends AppCompatActivity {
         if (data != null) {
             if (data.containsKey(Common.BOUNDLE_COMPANY_ID)) {
                 int company_id = data.getInt(Common.BOUNDLE_COMPANY_ID);
-                //new AsyncCallCompanyDetails().execute(company_id);
-                String WSDL_URL = "http://iccyp.com/GetFirstMenu.svc/json/detail/" + company_id;
-                this.volleyJsonObjectRequest(WSDL_URL);
+                String get_url = String.format(Common.WSDL_COMPANY_DETAILS, company_id);
+
+                Log.i("WSDL_URL", get_url);
+
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                        get_url,
+                        null,
+                        createResponseSuccessListener(),
+                        createResponseErrorListener());
+
+                request.setRetryPolicy(new DefaultRetryPolicy(
+                        Common.MY_SOCKET_TIMEOUT_MS,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                ));
+
+                AppSingleton.getInstance(this).addToRequestQueue(request, "");
+
             }
         }
+
     }
 
-    public class AsyncCallCompanyDetails extends AsyncTask<Integer, Void, Company> {
+    private Response.ErrorListener createResponseErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        };
+    }
 
-        private final ProgressDialog dialog = new ProgressDialog(Details.this);
+    private Response.Listener<JSONObject> createResponseSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                bindCompanyDetails(response);
+            }
+        };
+    }
 
-        @Override
-        protected Company doInBackground(Integer... integers) {
-            CompanyWebServices services = new CompanyWebServices();
-            Company company = services.GetCompanyDetails(integers[0]);
-            return company;
-        }
+    private void bindCompanyDetails(JSONObject _response) {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.setMessage("數據加載中......");
-            dialog.show();
-        }
+        try {
 
-        @Override
-        protected void onPostExecute(Company company) {
-            super.onPostExecute(company);
+            JSONArray company_response = _response.getJSONArray("GetDetailListResult");
+            JSONObject response = company_response.getJSONObject(0);
+
+            Company company = new Company(response);
 
             String cname = company.getChineseName();
             String ename = company.getEnglishName();
@@ -96,50 +123,10 @@ public class Details extends AppCompatActivity {
             label_company_english_name.setText(ename);
             label_company_tags.setText(tags);
 
-            dialog.dismiss();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
-    public void volleyJsonObjectRequest(String url) {
-
-        String REQUEST_TAG = "com.androidtutorialpoint.volleyJsonObjectRequest";
-//        progressDialog.setMessage("Loading...");
-//        progressDialog.show();
-
-        final String TAG="CCYP";
-
-        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
-
-//                        LayoutInflater li = LayoutInflater.from(Details.this);
-//                        //showDialogView = li.inflate(R.layout.show_dialog, null);
-//                        outputTextView = (TextView) showDialogView.findViewById(R.id.text_view_dialog);
-//                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Details.this);
-//                        alertDialogBuilder.setView(showDialogView);
-//                        alertDialogBuilder
-//                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                    }
-//                                })
-//                                .setCancelable(false)
-//                                .create();
-//                        outputTextView.setText(response.toString());
-//                        alertDialogBuilder.show();
-//                        progressDialog.hide();
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-               // progressDialog.hide();
-            }
-        });
-
-        // Adding JsonObject request to request queue
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq, REQUEST_TAG);
-    }
 }
