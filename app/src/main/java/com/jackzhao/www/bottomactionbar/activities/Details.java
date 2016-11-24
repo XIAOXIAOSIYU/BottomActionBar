@@ -16,6 +16,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.jackzhao.www.bottomactionbar.R;
 import com.jackzhao.www.bottomactionbar.adapters.CompanyAdapter;
 import com.jackzhao.www.bottomactionbar.models.Company;
@@ -27,12 +33,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Details extends AppCompatActivity {
+public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
     ImageView image;
-    TextView label_company_name;
-    TextView label_company_english_name;
-    TextView label_company_tags;
+    TextView label_company_name, label_company_english_name, label_company_tags, label_company_address, label_company_openhour, label_company_phone;
+    private double latitude = 0, longitude = 0;
+
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,10 @@ public class Details extends AppCompatActivity {
         label_company_name = (TextView) findViewById(R.id.lb_company_name);
         label_company_english_name = (TextView) findViewById(R.id.lb_company_english_name);
         label_company_tags = (TextView) findViewById(R.id.lb_company_tags);
+        label_company_address = (TextView) findViewById(R.id.lb_company_details_address);
+        label_company_openhour = (TextView) findViewById(R.id.lb_company_details_openhour);
+        label_company_phone = (TextView) findViewById(R.id.lb_company_details_phone);
+
 
         Bundle data = getIntent().getExtras();
         if (data != null) {
@@ -55,7 +66,7 @@ public class Details extends AppCompatActivity {
                 int company_id = data.getInt(Common.BOUNDLE_COMPANY_ID);
                 String get_url = String.format(Common.WSDL_COMPANY_DETAILS, company_id);
 
-                Log.i("WSDL_URL", get_url);
+                //Log.i(Common.TAG + "_WSDL_URL", get_url);
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                         get_url,
@@ -70,6 +81,7 @@ public class Details extends AppCompatActivity {
                 ));
 
                 AppSingleton.getInstance(this).addToRequestQueue(request, "");
+
 
             }
         }
@@ -90,6 +102,10 @@ public class Details extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 bindCompanyDetails(response);
+
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(Details.this);
             }
         };
     }
@@ -123,10 +139,30 @@ public class Details extends AppCompatActivity {
             label_company_english_name.setText(ename);
             label_company_tags.setText(tags);
 
+            label_company_address.setText(company.getStreet() + " " + company.getCity() + " " + company.getState());
+            label_company_openhour.setText(company.getOpenHour());
+            label_company_phone.setText(company.getPhone());
+
+            latitude = company.getLatitude();
+            longitude = company.getLongitude();
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+
+        //Log.i(Common.TAG, String.valueOf(latitude) + "-" + String.valueOf(longitude));
+
+        // Add a marker in Sydney, Australia, and move the camera.
+        LatLng sydney = new LatLng(latitude, longitude);
+
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17));
+    }
 }

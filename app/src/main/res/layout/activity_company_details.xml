@@ -28,6 +28,7 @@
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
 
             <TextView
+                android:id="@+id/lb_company_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="120"
@@ -35,8 +36,7 @@
                 android:paddingLeft="10dp"
                 android:text="商家信息"
                 android:textColor="@android:color/background_light"
-                android:textSize="18sp"
-                android:id="@+id/lb_company_name" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -83,10 +83,10 @@
                 android:layout_marginEnd="90dp"
                 android:layout_marginRight="90dp"
                 android:clickable="true"
+                app:backgroundTint="@android:color/holo_green_light"
                 app:layout_anchor="@+id/img_company_details_main_image"
                 app:layout_anchorGravity="bottom|right"
-                app:srcCompat="@drawable/ic_favorite_border_white_36dp"
-                app:backgroundTint="@android:color/holo_green_light" />
+                app:srcCompat="@drawable/ic_favorite_border_white_36dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,9 +107,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
+                        android:layout_marginBottom="10dp"
                         android:background="#00000000"
-                        android:orientation="vertical"
-                        android:layout_marginBottom="10dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/lb_company_english_name"
@@ -130,10 +130,105 @@
 
                 </FrameLayout>
 
-                <TextView
-                    android:id="@+id/label_space"
+                <!--<TextView-->
+                <!--android:id="@+id/label_space"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp" />-->
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp" />
+                    android:layout_height="140dp"
+                    tools:context=".activities.Details" />
+
+                <LinearLayout
+                    android:id="@+id/layout_company_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/layout_company_info_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+                        <TextView
+                            android:id="@+id/lb_company_details_address"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="10" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_company_info_openhour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+                        <TextView
+                            android:id="@+id/lb_company_details_openhour"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="10" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_company_info_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+                        <TextView
+                            android:id="@+id/lb_company_details_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="10" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

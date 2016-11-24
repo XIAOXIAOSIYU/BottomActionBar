@@ -53,8 +53,8 @@ public class CompanyWebServices extends BaseWebServices {
             company.setStreet(response.getString("Street"));
             company.setCity(response.getString("City"));
             company.setFax(response.getString("Fax"));
-            company.setLatitude(response.getString("Latitude"));
-            company.setLongitude(response.getString("Longitude"));
+            company.setLatitude(Double.parseDouble(response.getString("Latitude")));
+            company.setLongitude(Double.parseDouble(response.getString("Longitude")));
             company.setOpenHour(response.getString("OpenHour"));
             company.setWebSite(response.getString("WebSite"));
             company.setEmail(response.getString("Email"));

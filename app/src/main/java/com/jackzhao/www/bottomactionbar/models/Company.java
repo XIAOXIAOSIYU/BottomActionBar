@@ -13,8 +13,8 @@ public class Company {
     public String Phone;
     public String Fax;
     public String OpenHour;
-    public String Latitude;
-    public String Longitude;
+    public Double Latitude;
+    public Double Longitude;
     public String EnglishName;
     public String ChineseName;
     public String WebSite;
@@ -37,8 +37,8 @@ public class Company {
             this.setStreet(response.getString("Street"));
             this.setCity(response.getString("City"));
             this.setFax(response.getString("Fax"));
-            this.setLatitude(response.getString("Latitude"));
-            this.setLongitude(response.getString("Longitude"));
+            this.setLatitude(Double.parseDouble(response.getString("Latitude")));
+            this.setLongitude(Double.parseDouble(response.getString("Longitude")));
             this.setOpenHour(response.getString("OpenHour"));
             this.setWebSite(response.getString("WebSite"));
             this.setEmail(response.getString("Email"));
@@ -118,19 +118,19 @@ public class Company {
         OpenHour = openHour;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return Latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         Latitude = latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return Longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         Longitude = longitude;
     }
 
