@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btn_company_details_popup_favorite"
+        android:title="收藏该商家" />
+
+    <item
+        android:id="@+id/btn_company_details_popup_wrong"
+        android:title="纠错" />
+
+</menu>

@@ -1,12 +1,19 @@
 package com.jackzhao.www.bottomactionbar.activities;
 
 import android.app.ProgressDialog;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +27,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.text.Line;
 import com.jackzhao.www.bottomactionbar.R;
 import com.jackzhao.www.bottomactionbar.adapters.CompanyAdapter;
 import com.jackzhao.www.bottomactionbar.models.Company;
@@ -35,11 +44,12 @@ import org.json.JSONObject;
 
 public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
-    ImageView image;
-    TextView label_company_name, label_company_english_name, label_company_tags, label_company_address, label_company_openhour, label_company_phone;
+    private ImageView image;
+    private TextView label_company_name, label_company_english_name, label_company_tags, label_company_address, label_company_openhour, label_company_phone;
     private double latitude = 0, longitude = 0;
-
     private GoogleMap mMap;
+
+    private ImageButton btn_company_details_more_control;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,39 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         label_company_address = (TextView) findViewById(R.id.lb_company_details_address);
         label_company_openhour = (TextView) findViewById(R.id.lb_company_details_openhour);
         label_company_phone = (TextView) findViewById(R.id.lb_company_details_phone);
+
+        btn_company_details_more_control = (ImageButton) findViewById(R.id.btn_company_details_more_control);
+        btn_company_details_more_control.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                PopupMenu menu = new PopupMenu(Details.this, view);
+                menu.getMenuInflater().inflate(R.menu.company_details_more_controller, menu.getMenu());
+                menu.show();
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.btn_company_details_popup_favorite: {
+                                Toast.makeText(getApplicationContext(), "Favorite", Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            case R.id.btn_company_details_popup_wrong: {
+                                Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+
+                        return true;
+                    }
+                });
+
+            }
+        });
 
 
         Bundle data = getIntent().getExtras();
@@ -82,7 +125,6 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
                 AppSingleton.getInstance(this).addToRequestQueue(request, "");
 
-
             }
         }
 
@@ -106,6 +148,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.map);
                 mapFragment.getMapAsync(Details.this);
+
+                initCompanyImageGallerySource();
             }
         };
     }
@@ -139,12 +183,17 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
             label_company_english_name.setText(ename);
             label_company_tags.setText(tags);
 
-            label_company_address.setText(company.getStreet() + " " + company.getCity() + " " + company.getState());
+            label_company_address.setText(company.getStreet() + " " + company.getCity() + " " + company.getState() + ", " + company.getZipCode());
             label_company_openhour.setText(company.getOpenHour());
             label_company_phone.setText(company.getPhone());
 
             latitude = company.getLatitude();
             longitude = company.getLongitude();
+
+            if (company.getOpenHour().equals("")) {
+                LinearLayout layout_company_info_openhour = (LinearLayout) findViewById(R.id.layout_company_info_openhour);
+                layout_company_info_openhour.setVisibility(View.GONE);
+            }
 
 
         } catch (JSONException e) {
@@ -162,7 +211,27 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         // Add a marker in Sydney, Australia, and move the camera.
         LatLng sydney = new LatLng(latitude, longitude);
 
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions()
+                .position(sydney)
+                .title("Marker in Sydney")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_black_36dp))
+                .alpha(0.7f));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17));
     }
+
+    private void initCompanyImageGallerySource(){
+        LinearLayout layout = (LinearLayout)findViewById(R.id.company_details_image_gallery);
+
+        for (int i = 0; i < 10; i++) {
+
+            ImageView image = new ImageView(this);
+            image.setId(i);
+            image.setPadding(2,2,2,2);
+            image.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.ic_search_black_24dp));
+            image.setScaleType(ImageView.ScaleType.FIT_XY);
+            layout.addView(image);
+
+        }
+    }
+
 }
