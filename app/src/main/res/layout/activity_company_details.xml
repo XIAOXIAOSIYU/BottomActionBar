@@ -5,8 +5,8 @@
     android:id="@+id/activity_company_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jackzhao.www.bottomactionbar.activities.Details"
-    android:background="@color/cast_expanded_controller_seek_bar_progress_background_tint_color">
+    android:background="@color/cast_expanded_controller_seek_bar_progress_background_tint_color"
+    tools:context="com.jackzhao.www.bottomactionbar.activities.Details">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_company_details"
@@ -257,35 +257,39 @@
 
                     <TextView
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="10"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
                         android:text="商家图片列表"
-                        android:layout_gravity="center_vertical"/>
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        app:srcCompat="@drawable/ic_view_module_black_24dp" />
 
                     <ImageView
                         android:layout_width="0dp"
-                        android:layout_weight="2"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_view_module_black_24dp"
-                        android:id="@+id/imageView2" />
-
-                    <ImageView
-                        android:layout_width="0dp"
                         android:layout_weight="2"
-                        android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
 
                 </LinearLayout>
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
 
                     <LinearLayout
                         android:id="@+id/company_details_image_gallery"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="90dp"
+                        android:orientation="horizontal"
+                        >
 
                     </LinearLayout>
 
@@ -299,22 +303,22 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="10"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="10"
                         android:text="商家评论"
-                        android:layout_gravity="center_vertical"/>
+                        android:textSize="14sp" />
 
                     <ImageView
                         android:layout_width="0dp"
-                        android:layout_weight="2"
                         android:layout_height="wrap_content"
+                        android:layout_weight="2"
                         app:srcCompat="@drawable/ic_view_list_black_24dp" />
 
                     <ImageView
                         android:layout_width="0dp"
-                        android:layout_weight="2"
                         android:layout_height="wrap_content"
+                        android:layout_weight="2"
                         app:srcCompat="@drawable/ic_insert_comment_black_24dp" />
 
                 </LinearLayout>

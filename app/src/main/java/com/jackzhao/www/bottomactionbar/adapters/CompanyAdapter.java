@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.jackzhao.www.bottomactionbar.R;
 import com.jackzhao.www.bottomactionbar.activities.Details;
 import com.jackzhao.www.bottomactionbar.utils.Common;
-import com.jackzhao.www.bottomactionbar.utils.GetImageAsyncTaskHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +23,7 @@ public class CompanyAdapter extends BaseAdapter {
     Context context;
 
     public CompanyAdapter(Context _context, JSONArray _jsonArray) {
+        super();
         this.jsonArray = _jsonArray;
         this.context = _context;
     }
@@ -57,14 +57,14 @@ public class CompanyAdapter extends BaseAdapter {
         try {
             JSONObject company = (JSONObject) jsonArray.get(position);
 
-            ImageView image = (ImageView) listview.findViewById(R.id.img_company);
+            final ImageView company_image = (ImageView) listview.findViewById(R.id.img_company);
             TextView lb_company = (TextView) listview.findViewById(R.id.lb_company);
             TextView lb_company_ename = (TextView) listview.findViewById(R.id.lb_company_ename);
             TextView lb_company_distance = (TextView) listview.findViewById(R.id.lb_company_distance);
             ImageView img_details = (ImageView) listview.findViewById(R.id.img_company_rows_details);
 
-            String company_image = company.getString("ImageURL");
-            new GetImageAsyncTaskHelper(image).execute(company_image);
+            String company_image_url = String.format(Common.APP_IMAGE_SERVER_URL, company.getString("ImageURL"));
+            Common.ImageLoaderWithVolley(context, company_image, company_image_url);
 
             String company_name = company.getString("CName");
             String company_ename = company.getString("EName");

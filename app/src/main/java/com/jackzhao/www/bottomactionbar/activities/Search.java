@@ -5,18 +5,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.jackzhao.www.bottomactionbar.R;
 import com.jackzhao.www.bottomactionbar.adapters.CompanyAdapter;
 import com.jackzhao.www.bottomactionbar.utils.AppSingleton;
 import com.jackzhao.www.bottomactionbar.utils.Common;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class Search extends AppCompatActivity {
 
@@ -31,7 +37,12 @@ public class Search extends AppCompatActivity {
         EditText txt_keys = (EditText) findViewById(R.id.txt_search);
         EditText txt_location = (EditText) findViewById(R.id.txt_location);
 
-        String keys = "美食";
+        String keys = null;
+        try {
+            keys = URLEncoder.encode("美食", "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         String location = "pasadena";
         String longitude = "-118";
         String latitude = "34";
@@ -50,6 +61,7 @@ public class Search extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
         ));
 
+        VolleyLog.DEBUG = true;
         AppSingleton.getInstance(this).addToRequestQueue(request, "");
 
     }

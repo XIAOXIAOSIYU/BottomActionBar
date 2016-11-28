@@ -1,27 +1,20 @@
 package com.jackzhao.www.bottomactionbar.activities;
 
-import android.app.ProgressDialog;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,13 +23,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.text.Line;
 import com.jackzhao.www.bottomactionbar.R;
-import com.jackzhao.www.bottomactionbar.adapters.CompanyAdapter;
 import com.jackzhao.www.bottomactionbar.models.Company;
 import com.jackzhao.www.bottomactionbar.utils.AppSingleton;
 import com.jackzhao.www.bottomactionbar.utils.Common;
-import com.jackzhao.www.bottomactionbar.webservices.CompanyWebServices;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +34,7 @@ import org.json.JSONObject;
 
 public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
-    private ImageView image;
+    private ImageView company_details_main_image;
     private TextView label_company_name, label_company_english_name, label_company_tags, label_company_address, label_company_openhour, label_company_phone;
     private double latitude = 0, longitude = 0;
     private GoogleMap mMap;
@@ -59,8 +49,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_company_details);
         setSupportActionBar(toolbar);
 
-        image = (ImageView) findViewById(R.id.img_company_details_main_image);
-        image.setScaleType(ImageView.ScaleType.FIT_XY);
+        company_details_main_image = (ImageView) findViewById(R.id.img_company_details_main_image);
+        company_details_main_image.setScaleType(ImageView.ScaleType.FIT_XY);
 
         label_company_name = (TextView) findViewById(R.id.lb_company_name);
         label_company_english_name = (TextView) findViewById(R.id.lb_company_english_name);
@@ -107,39 +97,30 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         if (data != null) {
             if (data.containsKey(Common.BOUNDLE_COMPANY_ID)) {
                 int company_id = data.getInt(Common.BOUNDLE_COMPANY_ID);
-                String get_url = String.format(Common.WSDL_COMPANY_DETAILS, company_id);
+                String company_images_url = String.format(Common.WSDL_COMPANY_IMAGE_LIST, company_id);
+                String company_details_url = String.format(Common.WSDL_COMPANY_DETAILS, company_id);
 
-                //Log.i(Common.TAG + "_WSDL_URL", get_url);
-
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                        get_url,
+                JsonObjectRequest details_request = new JsonObjectRequest(Request.Method.GET,
+                        company_details_url,
                         null,
-                        createResponseSuccessListener(),
+                        createDetailsResponseSuccessListener(),
                         createResponseErrorListener());
 
-                request.setRetryPolicy(new DefaultRetryPolicy(
-                        Common.MY_SOCKET_TIMEOUT_MS,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                ));
+                JsonObjectRequest images_request = new JsonObjectRequest(Request.Method.GET,
+                        company_images_url,
+                        null,
+                        createImagesResponseSuccessListener(),
+                        createResponseErrorListener());
 
-                AppSingleton.getInstance(this).addToRequestQueue(request, "");
+                AppSingleton.getInstance(this).addToRequestQueue(details_request, "");
+                AppSingleton.getInstance(this).addToRequestQueue(images_request, "");
 
             }
         }
 
     }
 
-    private Response.ErrorListener createResponseErrorListener() {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        };
-    }
-
-    private Response.Listener<JSONObject> createResponseSuccessListener() {
+    private Response.Listener<JSONObject> createDetailsResponseSuccessListener() {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -148,8 +129,42 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.map);
                 mapFragment.getMapAsync(Details.this);
+            }
+        };
+    }
 
-                initCompanyImageGallerySource();
+    private Response.Listener<JSONObject> createImagesResponseSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                JSONArray image_list = new JSONArray();
+                try {
+                    image_list = response.getJSONArray("GetImagesResult");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (image_list.length() > 0) {
+                    try {
+                        JSONObject image = (JSONObject) image_list.get(0);
+                        String image_url = String.format(Common.APP_IMAGE_SERVER_URL, image.getString("ImageName"));
+                        Common.ImageLoaderWithVolley(Details.this, company_details_main_image, image_url);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    initCompanyImageGallerySource(image_list);
+                }
+            }
+        };
+    }
+
+    private Response.ErrorListener createResponseErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         };
     }
@@ -205,10 +220,6 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-
-        //Log.i(Common.TAG, String.valueOf(latitude) + "-" + String.valueOf(longitude));
-
-        // Add a marker in Sydney, Australia, and move the camera.
         LatLng sydney = new LatLng(latitude, longitude);
 
         mMap.addMarker(new MarkerOptions()
@@ -219,17 +230,29 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17));
     }
 
-    private void initCompanyImageGallerySource(){
-        LinearLayout layout = (LinearLayout)findViewById(R.id.company_details_image_gallery);
+    private void initCompanyImageGallerySource(JSONArray image_list) {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.company_details_image_gallery);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < image_list.length(); i++) {
 
-            ImageView image = new ImageView(this);
-            image.setId(i);
-            image.setPadding(2,2,2,2);
-            image.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.ic_search_black_24dp));
-            image.setScaleType(ImageView.ScaleType.FIT_XY);
-            layout.addView(image);
+            JSONObject image = null;
+            try {
+
+                image = (JSONObject) image_list.get(0);
+                String image_url = String.format(Common.APP_IMAGE_SERVER_URL, image.getString("ImageName"));
+
+                ImageView _image = new ImageView(this);
+                _image.setId(i);
+                _image.setPadding(2, 2, 2, 2);
+                //_image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_search_black_24dp));
+
+                _image.setMaxWidth(90);
+                Common.ImageLoaderWithVolley(Details.this, _image, image_url);
+                layout.addView(_image);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         }
     }
