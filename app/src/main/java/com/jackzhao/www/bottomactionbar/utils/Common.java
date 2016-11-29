@@ -1,6 +1,9 @@
 package com.jackzhao.www.bottomactionbar.utils;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
@@ -14,7 +17,8 @@ public class Common {
     public static final String WSDL_COMPANY_DETAILS = "http://iccyp.com/GetFirstMenu.svc/json/detail/%1$s";
     public static final String WSDL_COMPANY_IMAGE_LIST = "http://iccyp.com/GetFirstMenu.svc/json/GetImages/%1$s";
     public static final String WSDL_COMPANY_REVIEW_LIST = "http://iccyp.com/GetFirstMenu.svc/json/GetReview/%1$s";
-    public static final String APP_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/businesses/%1$s.jpg";
+    public static final String APP_BUSINESS_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/businesses/%1$s.jpg";
+    public static final String APP_USER_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/users/%1$s.jpg";
 
     public static final int MY_SOCKET_TIMEOUT_MS = 5000;
 
@@ -33,5 +37,15 @@ public class Common {
                 error.printStackTrace();
             }
         });
+    }
+
+    public static ShapeDrawable ImageCircled(int radius){
+
+        ShapeDrawable drawable =new ShapeDrawable(new OvalShape());
+        drawable.setIntrinsicHeight(radius);
+        drawable.setIntrinsicWidth(radius);
+        drawable.getPaint().setColor(Color.parseColor("#abcd123"));
+
+        return drawable;
     }
 }

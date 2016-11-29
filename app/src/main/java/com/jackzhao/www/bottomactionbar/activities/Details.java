@@ -1,5 +1,6 @@
 package com.jackzhao.www.bottomactionbar.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jackzhao.www.bottomactionbar.R;
+import com.jackzhao.www.bottomactionbar.adapters.ReviewAdapter;
 import com.jackzhao.www.bottomactionbar.models.Company;
 import com.jackzhao.www.bottomactionbar.utils.AppSingleton;
 import com.jackzhao.www.bottomactionbar.utils.Common;
@@ -37,9 +40,11 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
     private ImageView company_details_main_image;
     private TextView label_company_name, label_company_english_name, label_company_tags, label_company_address, label_company_openhour, label_company_phone;
     private double latitude = 0, longitude = 0;
-    private GoogleMap mMap;
-
     private ImageButton btn_company_details_more_control;
+    private ListView lv_company_review;
+
+    private GoogleMap mMap;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +56,13 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
         company_details_main_image = (ImageView) findViewById(R.id.img_company_details_main_image);
         company_details_main_image.setScaleType(ImageView.ScaleType.FIT_XY);
-
         label_company_name = (TextView) findViewById(R.id.lb_company_name);
         label_company_english_name = (TextView) findViewById(R.id.lb_company_english_name);
         label_company_tags = (TextView) findViewById(R.id.lb_company_tags);
         label_company_address = (TextView) findViewById(R.id.lb_company_details_address);
         label_company_openhour = (TextView) findViewById(R.id.lb_company_details_openhour);
         label_company_phone = (TextView) findViewById(R.id.lb_company_details_phone);
+        lv_company_review = (ListView) findViewById(R.id.company_details_reviews);
 
         btn_company_details_more_control = (ImageButton) findViewById(R.id.btn_company_details_more_control);
         btn_company_details_more_control.setOnClickListener(new View.OnClickListener() {
@@ -88,10 +93,12 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                         return true;
                     }
                 });
-
             }
         });
 
+        dialog = new ProgressDialog(Details.this);
+        dialog.setMessage("Data loading ......");
+        dialog.show();
 
         Bundle data = getIntent().getExtras();
         if (data != null) {
@@ -99,6 +106,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 int company_id = data.getInt(Common.BOUNDLE_COMPANY_ID);
                 String company_images_url = String.format(Common.WSDL_COMPANY_IMAGE_LIST, company_id);
                 String company_details_url = String.format(Common.WSDL_COMPANY_DETAILS, company_id);
+                String company_review_url = String.format(Common.WSDL_COMPANY_REVIEW_LIST, company_id);
 
                 JsonObjectRequest details_request = new JsonObjectRequest(Request.Method.GET,
                         company_details_url,
@@ -112,12 +120,33 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                         createImagesResponseSuccessListener(),
                         createResponseErrorListener());
 
+                JsonObjectRequest review_request = new JsonObjectRequest(Request.Method.GET,
+                        company_review_url,
+                        null,
+                        createReviewsResponseSuccessListener(),
+                        createResponseErrorListener());
+
                 AppSingleton.getInstance(this).addToRequestQueue(details_request, "");
                 AppSingleton.getInstance(this).addToRequestQueue(images_request, "");
+                AppSingleton.getInstance(this).addToRequestQueue(review_request, "");
 
             }
         }
 
+    }
+
+    private Response.Listener<JSONObject> createReviewsResponseSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray reviews = response.getJSONArray("GetReviewResult");
+                    bindCompanyReviews(reviews);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     private Response.Listener<JSONObject> createDetailsResponseSuccessListener() {
@@ -148,7 +177,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 if (image_list.length() > 0) {
                     try {
                         JSONObject image = (JSONObject) image_list.get(0);
-                        String image_url = String.format(Common.APP_IMAGE_SERVER_URL, image.getString("ImageName"));
+                        String image_url = String.format(Common.APP_BUSINESS_IMAGE_SERVER_URL, image.getString("ImageName"));
                         Common.ImageLoaderWithVolley(Details.this, company_details_main_image, image_url);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -197,7 +226,6 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
             label_company_name.setText(cname);
             label_company_english_name.setText(ename);
             label_company_tags.setText(tags);
-
             label_company_address.setText(company.getStreet() + " " + company.getCity() + " " + company.getState() + ", " + company.getZipCode());
             label_company_openhour.setText(company.getOpenHour());
             label_company_phone.setText(company.getPhone());
@@ -210,10 +238,18 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 layout_company_info_openhour.setVisibility(View.GONE);
             }
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void bindCompanyReviews(JSONArray reviews) {
+        int count = reviews.length();
+
+        ReviewAdapter adapter = new ReviewAdapter(Details.this, reviews);
+        adapter.notifyDataSetChanged();
+        lv_company_review.setAdapter(adapter);
     }
 
     @Override
@@ -238,15 +274,17 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
             JSONObject image = null;
             try {
 
-                image = (JSONObject) image_list.get(0);
-                String image_url = String.format(Common.APP_IMAGE_SERVER_URL, image.getString("ImageName"));
+                int width = 300, height = 300;
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+                params.setMargins(0, 0, 20, 0);
+
+                image = (JSONObject) image_list.get(i);
+                String image_url = String.format(Common.APP_BUSINESS_IMAGE_SERVER_URL, image.getString("ImageName"));
 
                 ImageView _image = new ImageView(this);
                 _image.setId(i);
-                _image.setPadding(2, 2, 2, 2);
-                //_image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_search_black_24dp));
-
-                _image.setMaxWidth(90);
+                _image.setLayoutParams(params);
+                _image.requestLayout();
                 Common.ImageLoaderWithVolley(Details.this, _image, image_url);
                 layout.addView(_image);
 
@@ -255,6 +293,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
             }
 
         }
+
+        dialog.dismiss();
     }
 
 }

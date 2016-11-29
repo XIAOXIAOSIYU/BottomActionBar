@@ -1,5 +1,6 @@
 package com.jackzhao.www.bottomactionbar.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import java.net.URLEncoder;
 public class Search extends AppCompatActivity {
 
     ListView lv_company;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,10 @@ public class Search extends AppCompatActivity {
         String longitude = "-118";
         String latitude = "34";
         String count = "0";
+
+        dialog = new ProgressDialog(Search.this);
+        dialog.setMessage("Data loading ......");
+        dialog.show();
 
         String get_url = String.format(Common.WSDL_COMPANY_LIST, keys, location, longitude, latitude, count);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -94,8 +100,9 @@ public class Search extends AppCompatActivity {
 
             JSONArray companies = response.getJSONArray("GetSearchResultsResult");
             CompanyAdapter adapter = new CompanyAdapter(Search.this, companies);
-            lv_company.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+            lv_company.setAdapter(adapter);
+            dialog.dismiss();
 
         } catch (JSONException e) {
             e.printStackTrace();
