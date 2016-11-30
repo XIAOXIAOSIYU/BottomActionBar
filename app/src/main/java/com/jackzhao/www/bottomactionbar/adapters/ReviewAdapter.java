@@ -3,7 +3,6 @@ package com.jackzhao.www.bottomactionbar.adapters;
 import android.content.Context;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
-import android.icu.text.TimeZoneFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.util.Date;
 
 public class ReviewAdapter extends BaseAdapter {
 
@@ -61,7 +59,7 @@ public class ReviewAdapter extends BaseAdapter {
         View listview = inflater.inflate(R.layout.activity_company_details_reviews_item, viewGroup, false);
 
         ImageView user_photo = (ImageView) listview.findViewById(R.id.company_review_user_photo);
-        user_photo.setBackground(Common.ImageCircled(70));
+        //user_photo.setBackground(Common.ImageCircled(40));
 
         TextView user_nickname = (TextView) listview.findViewById(R.id.company_review_user_nickname);
         TextView review_post_date = (TextView) listview.findViewById(R.id.company_review_post_date);
@@ -90,7 +88,8 @@ public class ReviewAdapter extends BaseAdapter {
                 }
             }
 
-            user_nickname.setText(review.getString("Nickname"));
+            String user_name = review.getString("Nickname");
+            user_nickname.setText(user_name.substring(0, 1).toUpperCase() + user_name.substring(1));
             company_review_score_taste_value.setText(review.getString("Taste"));
             company_review_score_sevice_value.setText(review.getString("Service"));
             company_review_score_amb_value.setText(review.getString("Amb"));

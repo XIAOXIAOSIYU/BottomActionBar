@@ -333,13 +333,13 @@
 
                 </LinearLayout>
 
-                <ListView
+                <com.jackzhao.www.bottomactionbar.components.nested_listview
                     android:id="@+id/company_details_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp">
 
-                </ListView>
+                </com.jackzhao.www.bottomactionbar.components.nested_listview>
 
             </LinearLayout>
 

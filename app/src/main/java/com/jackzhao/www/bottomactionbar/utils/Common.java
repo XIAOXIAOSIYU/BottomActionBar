@@ -1,6 +1,8 @@
 package com.jackzhao.www.bottomactionbar.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.jackzhao.www.bottomactionbar.R;
 
 public class Common {
 
@@ -35,7 +38,8 @@ public class Common {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                CommonToast(context, error.getMessage());
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.imageholder);
+                image_view.setImageBitmap(bitmap);
             }
         });
     }
@@ -49,8 +53,7 @@ public class Common {
         ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
         drawable.setIntrinsicHeight(radius);
         drawable.setIntrinsicWidth(radius);
-        //drawable.getPaint().setColor(Color.parseColor("#abcd123"));
-
+        drawable.getPaint().setColor(Color.parseColor("#abcd123"));
         return drawable;
     }
 }
