@@ -22,13 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="10dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/company_review_user_nickname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="8" />
+                android:layout_weight="8"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/company_review_post_date"
@@ -49,53 +50,50 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="口味" />
+                android:text="口味"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/company_review_score_taste_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/company_review_score_service_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="服务" />
+                android:text="服务"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/company_review_score_sevice_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/company_review_score_amb_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="环境" />
+                android:text="环境"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/company_review_score_amb_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textSize="12dp" />
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/company_review_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp" />

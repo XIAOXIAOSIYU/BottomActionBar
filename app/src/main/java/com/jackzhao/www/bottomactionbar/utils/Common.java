@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -34,17 +35,21 @@ public class Common {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                CommonToast(context, error.getMessage());
             }
         });
     }
 
-    public static ShapeDrawable ImageCircled(int radius){
+    public static void CommonToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
 
-        ShapeDrawable drawable =new ShapeDrawable(new OvalShape());
+    public static ShapeDrawable ImageCircled(int radius) {
+
+        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
         drawable.setIntrinsicHeight(radius);
         drawable.setIntrinsicWidth(radius);
-        drawable.getPaint().setColor(Color.parseColor("#abcd123"));
+        //drawable.getPaint().setColor(Color.parseColor("#abcd123"));
 
         return drawable;
     }

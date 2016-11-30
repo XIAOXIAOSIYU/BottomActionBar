@@ -41,7 +41,7 @@ public class Search extends AppCompatActivity {
 
         String keys = null;
         try {
-            keys = URLEncoder.encode("美食", "UTF-8");
+            keys = URLEncoder.encode("海港大酒楼", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

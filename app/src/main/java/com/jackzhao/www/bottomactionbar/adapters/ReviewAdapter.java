@@ -1,6 +1,9 @@
 package com.jackzhao.www.bottomactionbar.adapters;
 
 import android.content.Context;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
+import android.icu.text.TimeZoneFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,9 @@ import com.jackzhao.www.bottomactionbar.utils.Common;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.Date;
 
 public class ReviewAdapter extends BaseAdapter {
 
@@ -55,7 +61,7 @@ public class ReviewAdapter extends BaseAdapter {
         View listview = inflater.inflate(R.layout.activity_company_details_reviews_item, viewGroup, false);
 
         ImageView user_photo = (ImageView) listview.findViewById(R.id.company_review_user_photo);
-        user_photo.setBackground(Common.ImageCircled(90));
+        user_photo.setBackground(Common.ImageCircled(70));
 
         TextView user_nickname = (TextView) listview.findViewById(R.id.company_review_user_nickname);
         TextView review_post_date = (TextView) listview.findViewById(R.id.company_review_post_date);
@@ -65,6 +71,7 @@ public class ReviewAdapter extends BaseAdapter {
         TextView company_review_score_sevice_value = (TextView) listview.findViewById(R.id.company_review_score_sevice_value);
         TextView company_review_score_amb_text = (TextView) listview.findViewById(R.id.company_review_score_amb_text);
         TextView company_review_score_amb_value = (TextView) listview.findViewById(R.id.company_review_score_amb_value);
+        TextView company_review_content = (TextView) listview.findViewById(R.id.company_review_content);
 
         try {
             JSONObject review = (JSONObject) jsonArray.get(i);
@@ -72,11 +79,22 @@ public class ReviewAdapter extends BaseAdapter {
             String image_url = String.format(Common.APP_USER_IMAGE_SERVER_URL, review.getString("UserID"));
             Common.ImageLoaderWithVolley(this.context, user_photo, image_url);
 
+            String post_date = review.getString("PublishTime");
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                try {
+                    review_post_date.setText(format.parse(post_date).toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
             user_nickname.setText(review.getString("Nickname"));
-            review_post_date.setText(review.getString("PublishTime"));
             company_review_score_taste_value.setText(review.getString("Taste"));
             company_review_score_sevice_value.setText(review.getString("Service"));
             company_review_score_amb_value.setText(review.getString("Amb"));
+            company_review_content.setText(review.getString("ReviewContent"));
 
         } catch (JSONException e) {
             e.printStackTrace();
