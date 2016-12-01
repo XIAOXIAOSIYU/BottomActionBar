@@ -5,7 +5,8 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jackzhao.www.bottomactionbar.activities.MainActivity">
+    tools:context="com.jackzhao.www.bottomactionbar.activities.MainActivity"
+    android:background="@drawable/homepage">
 
     <fragment
         android:layout_width="match_parent"
@@ -16,24 +17,18 @@
         android:id="@+id/fragment_toolbar_bottom"
         tools:layout="@layout/fragment_bottom_toolbar" />
 
-    <ImageView
-        app:srcCompat="@drawable/hizologo"
-        android:layout_marginTop="96dp"
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:text="海搜V4.0 全新上线"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView6"
-        android:textColor="#001F3C"
-        android:textSize="18sp"
-        android:layout_marginBottom="46dp"
+        android:textColor="#999"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_above="@+id/fragment_toolbar_bottom"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
