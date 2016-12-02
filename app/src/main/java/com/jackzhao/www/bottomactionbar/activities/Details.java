@@ -58,8 +58,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_details);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_company_details);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_company_details);
+        //setSupportActionBar(toolbar);
 
         company_details_main_image = (ImageView) findViewById(R.id.img_company_details_main_image);
         company_details_main_image.setScaleType(ImageView.ScaleType.FIT_XY);
