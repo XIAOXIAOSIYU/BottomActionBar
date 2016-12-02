@@ -261,8 +261,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="6"
                         android:text="商家图片列表"
-                        android:textSize="16sp"
-                        android:textColor="#000"/>
+                        android:textColor="#000"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/imageView2"
@@ -310,8 +310,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="6"
                         android:text="商家评论"
-                        android:textSize="16sp"
-                        android:textColor="#000"/>
+                        android:textColor="#000"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/imageView4"
@@ -333,13 +333,18 @@
 
                 </LinearLayout>
 
-                <com.jackzhao.www.bottomactionbar.components.nested_listview
+                <!--<com.jackzhao.www.bottomactionbar.components.nested_listview-->
+                <!--android:id="@+id/company_details_reviews"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="16dp">-->
+                <!--</com.jackzhao.www.bottomactionbar.components.nested_listview>-->
+
+                <LinearLayout
                     android:id="@+id/company_details_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                </com.jackzhao.www.bottomactionbar.components.nested_listview>
+                    android:orientation="vertical"></LinearLayout>
 
             </LinearLayout>
 

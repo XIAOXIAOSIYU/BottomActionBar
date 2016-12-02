@@ -1,10 +1,14 @@
 package com.jackzhao.www.bottomactionbar.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +32,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jackzhao.www.bottomactionbar.R;
-import com.jackzhao.www.bottomactionbar.adapters.ReviewAdapter;
 import com.jackzhao.www.bottomactionbar.models.Company;
 import com.jackzhao.www.bottomactionbar.utils.AppSingleton;
 import com.jackzhao.www.bottomactionbar.utils.Common;
@@ -37,13 +40,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+
 public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
     private ImageView company_details_main_image;
     private TextView label_company_name, label_company_english_name, label_company_tags, label_company_address, label_company_openhour, label_company_phone;
     private double latitude = 0, longitude = 0;
     private ImageButton btn_company_details_more_control;
-    private ListView lv_company_review;
+    private LinearLayout lv_company_review;
 
     private GoogleMap mMap;
     private ProgressDialog dialog;
@@ -64,7 +69,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         label_company_address = (TextView) findViewById(R.id.lb_company_details_address);
         label_company_openhour = (TextView) findViewById(R.id.lb_company_details_openhour);
         label_company_phone = (TextView) findViewById(R.id.lb_company_details_phone);
-        lv_company_review = (ListView) findViewById(R.id.company_details_reviews);
+        lv_company_review = (LinearLayout) findViewById(R.id.company_details_reviews);
         btn_company_details_more_control = (ImageButton) findViewById(R.id.btn_company_details_more_control);
         btn_company_details_more_control.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,9 +253,59 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
     private void bindCompanyReviews(JSONArray reviews) {
         int count = reviews.length();
 
-        ReviewAdapter adapter = new ReviewAdapter(Details.this, reviews);
-        adapter.notifyDataSetChanged();
-        lv_company_review.setAdapter(adapter);
+        //ReviewAdapter adapter = new ReviewAdapter(Details.this, reviews);
+        // adapter.notifyDataSetChanged();
+        //lv_company_review.setAdapter(adapter);
+
+        for (int i = 0; i < reviews.length(); i++) {
+            LayoutInflater inflater = null;
+            inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View listview = inflater.inflate(R.layout.activity_company_details_reviews_item, null);
+
+            ImageView user_photo = (ImageView) listview.findViewById(R.id.company_review_user_photo);
+            //user_photo.setBackground(Common.ImageCircled(40));
+
+            TextView user_nickname = (TextView) listview.findViewById(R.id.company_review_user_nickname);
+            TextView review_post_date = (TextView) listview.findViewById(R.id.company_review_post_date);
+            TextView company_review_score_taste_text = (TextView) listview.findViewById(R.id.company_review_score_taste_text);
+            TextView company_review_score_taste_value = (TextView) listview.findViewById(R.id.company_review_score_taste_value);
+            TextView company_review_score_service_text = (TextView) listview.findViewById(R.id.company_review_score_service_text);
+            TextView company_review_score_sevice_value = (TextView) listview.findViewById(R.id.company_review_score_sevice_value);
+            TextView company_review_score_amb_text = (TextView) listview.findViewById(R.id.company_review_score_amb_text);
+            TextView company_review_score_amb_value = (TextView) listview.findViewById(R.id.company_review_score_amb_value);
+            TextView company_review_content = (TextView) listview.findViewById(R.id.company_review_content);
+
+            JSONObject review = null;
+            try {
+                review = (JSONObject) reviews.get(i);
+                String image_url = String.format(Common.APP_USER_IMAGE_SERVER_URL, review.getString("UserID"));
+                Common.ImageLoaderWithVolley(this, user_photo, image_url);
+
+                String post_date = review.getString("PublishTime");
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                    try {
+                        review_post_date.setText(format.parse(post_date).toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                String user_name = review.getString("Nickname");
+                user_nickname.setText(user_name.substring(0, 1).toUpperCase() + user_name.substring(1));
+                company_review_score_taste_value.setText(review.getString("Taste"));
+                company_review_score_sevice_value.setText(review.getString("Service"));
+                company_review_score_amb_value.setText(review.getString("Amb"));
+                company_review_content.setText(review.getString("ReviewContent"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            lv_company_review.addView(listview);
+
+        }
+
     }
 
     @Override
@@ -298,9 +353,11 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         dialog.dismiss();
     }
 
-    /**** Method for Setting the Height of the ListView dynamically.
-     **** Hack to fix the issue of not showing all the items of the ListView
-     **** when placed inside a ScrollView  ****/
+    /****
+     * Method for Setting the Height of the ListView dynamically.
+     * *** Hack to fix the issue of not showing all the items of the ListView
+     * *** when placed inside a ScrollView
+     ****/
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null)
