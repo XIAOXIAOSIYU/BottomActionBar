@@ -1,18 +1,16 @@
 package com.jackzhao.www.bottomactionbar.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,8 +51,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_details);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_company_details);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_company_details);
+        //setSupportActionBar(toolbar);
 
         company_details_main_image = (ImageView) findViewById(R.id.img_company_details_main_image);
         company_details_main_image.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -194,7 +192,6 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 Common.CommonToast(Details.this, error.getMessage());
             }
         };
@@ -224,10 +221,10 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
             if (tags == "null" || tags.length() == 0) {
                 tags = "--";
             }
+            initCompanyTags(label_company_tags, tags);
 
             label_company_name.setText(cname);
             label_company_english_name.setText(ename);
-            label_company_tags.setText(tags);
             label_company_address.setText(company.getStreet() + " " + company.getCity() + " " + company.getState() + ", " + company.getZipCode());
             label_company_openhour.setText(company.getOpenHour());
             label_company_phone.setText(company.getPhone());
@@ -245,12 +242,10 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
 
-
     private void bindCompanyReviews(JSONArray reviews) {
 
         ReviewAdapter adapter = new ReviewAdapter(Details.this, reviews);
         adapter.generateReviewView(lv_company_review);
-        // adapter.notifyDataSetChanged();
 
     }
 
@@ -299,30 +294,32 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         dialog.dismiss();
     }
 
-    /****
-     * Method for Setting the Height of the ListView dynamically.
-     * *** Hack to fix the issue of not showing all the items of the ListView
-     * *** when placed inside a ScrollView
-     ****/
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
-            return;
+    private void initCompanyTags(TextView label, final String tags) {
 
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, Toolbar.LayoutParams.WRAP_CONTENT));
+        if (tags.length() < 10) {
+            label.setText(tags);
+        } else {
+            String _tags = tags.substring(0, 10) + "......";
+            label.setText(_tags);
+            label.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Details.this);
+                    builder.setMessage(tags);
+                    builder.setCancelable(true);
+                    builder.setNegativeButton(
+                            "关闭",
+                            new DialogInterface.OnClickListener() {
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                }
+            });
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
+
     }
 
 }
