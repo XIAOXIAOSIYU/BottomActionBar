@@ -305,6 +305,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Details.this);
+                    builder.setTitle("更多标签");
                     builder.setMessage(tags);
                     builder.setCancelable(true);
                     builder.setNegativeButton(
@@ -316,6 +317,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                                     dialogInterface.cancel();
                                 }
                             });
+                    builder.show();
                 }
             });
         }
