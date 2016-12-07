@@ -21,6 +21,7 @@ public class Common {
     public static final String WSDL_COMPANY_DETAILS = "http://iccyp.com/GetFirstMenu.svc/json/detail/%1$s";
     public static final String WSDL_COMPANY_IMAGE_LIST = "http://iccyp.com/GetFirstMenu.svc/json/GetImages/%1$s";
     public static final String WSDL_COMPANY_REVIEW_LIST = "http://iccyp.com/GetFirstMenu.svc/json/GetReview/%1$s";
+    public static final String WSDL_USER_LOGIN = "http://iccyp.com/GetFirstMenu.svc/json/login/%1$s/%2$s";
     public static final String APP_BUSINESS_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/businesses/%1$s.jpg";
     public static final String APP_USER_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/users/%1$s.jpg";
 
