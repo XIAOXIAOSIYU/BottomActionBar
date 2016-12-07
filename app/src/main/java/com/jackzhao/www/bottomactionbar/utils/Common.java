@@ -1,6 +1,8 @@
 package com.jackzhao.www.bottomactionbar.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.ObbInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -21,6 +23,7 @@ public class Common {
     public static final String WSDL_COMPANY_DETAILS = "http://iccyp.com/GetFirstMenu.svc/json/detail/%1$s";
     public static final String WSDL_COMPANY_IMAGE_LIST = "http://iccyp.com/GetFirstMenu.svc/json/GetImages/%1$s";
     public static final String WSDL_COMPANY_REVIEW_LIST = "http://iccyp.com/GetFirstMenu.svc/json/GetReview/%1$s";
+    public static final String WSDL_USER_LOGIN = "http://iccyp.com/GetFirstMenu.svc/json/login/%1$s/%2$s";
     public static final String APP_BUSINESS_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/businesses/%1$s.jpg";
     public static final String APP_USER_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/users/%1$s.jpg";
 
@@ -46,6 +49,15 @@ public class Common {
 
     public static void CommonToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void CommonStartActivity(Context context, Class<Object> activity) {
+
+        Intent intent = new Intent(context, activity);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+
     }
 
     public static ShapeDrawable ImageCircled(int radius) {
