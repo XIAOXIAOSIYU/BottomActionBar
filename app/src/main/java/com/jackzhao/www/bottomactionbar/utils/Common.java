@@ -2,7 +2,6 @@ package com.jackzhao.www.bottomactionbar.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ObbInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -51,7 +50,7 @@ public class Common {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    public static void CommonStartActivity(Context context, Class<Object> activity) {
+    public static void CommonStartActivity(Context context, Class<?> activity) {
 
         Intent intent = new Intent(context, activity);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

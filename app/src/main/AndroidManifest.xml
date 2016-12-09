@@ -19,8 +19,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".activities.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +33,8 @@
         <activity android:name=".activities.Search" />
         <activity android:name=".components.listview_item_company" />
         <activity android:name=".activities.Details" />
-        <activity android:name=".components.company_details_reviews_item"></activity>
+        <activity android:name=".components.company_details_reviews_item" />
+        <activity android:name=".activities.UserCenter"></activity>
     </application>
 
 </manifest>

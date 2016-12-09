@@ -14,10 +14,17 @@ import com.jackzhao.www.bottomactionbar.utils.UserManage;
 
 public class User extends AppCompatActivity {
 
+    private UserManage user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        user = new UserManage(this);
+        if (user.CheckUserLogged()) {
+            Common.CommonStartActivity(User.this, UserCenter.class);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_login);
         toolbar.setTitle("登录");
@@ -40,7 +47,7 @@ public class User extends AppCompatActivity {
         EditText txt_email = (EditText) findViewById(R.id.txt_user_email);
         EditText txt_password = (EditText) findViewById(R.id.txt_user_password);
 
-        UserManage user = new UserManage(this);
+        //UserManage user = new UserManage(this);
         user.generateLoginSession(txt_email.getText().toString(), txt_password.getText().toString());
     }
 }

@@ -29,20 +29,23 @@ public class UserManage {
     public static final String PREF_USER_ID = "USER_ID";
     public static final String PREF_USER_NAME = "USER_NAME";
     public static final String PREF_USER_EMAIL = "USER_EMAIL";
+    public static final String PREF_USER_PHOTO = "USER_PHOTO";
 
     private ProgressDialog dialog;
 
     public UserManage(Context _context) {
         this.context = _context;
-        preferences = this.context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        preferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = preferences.edit();
-        dialog = new ProgressDialog(_context);
-        dialog.setTitle("User Login");
-        dialog.setMessage("We are logging you in......");
-        dialog.show();
+        dialog = new ProgressDialog(context);
+
     }
 
     public void generateLoginSession(String email, String password) {
+
+        dialog.setTitle("User Login");
+        dialog.setMessage("We are logging you in......");
+        dialog.show();
 
         String get_url = String.format(Common.WSDL_USER_LOGIN, email, password);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -89,10 +92,12 @@ public class UserManage {
                 if (response_array.length() == 1) {
 
                     JSONObject login_details = (JSONObject) response_array.get(0);
+                    String user_id = login_details.getString("userID");
                     editor.putBoolean(PREF_USER_IS_LOGIN, true);
                     editor.putString(PREF_USER_NAME, login_details.getString("nickname"));
                     editor.putString(PREF_USER_EMAIL, login_details.getString("email"));
-                    editor.putInt(PREF_USER_ID, Integer.parseInt(login_details.getString("userID")));
+                    editor.putInt(PREF_USER_ID, Integer.parseInt(user_id));
+                    editor.putString(PREF_USER_PHOTO, user_id + ".jpg");
                     editor.commit();
 
                     Common.CommonToast(context, "Login succeed");
@@ -114,7 +119,7 @@ public class UserManage {
         user.setNickName(preferences.getString(PREF_USER_NAME, null));
         user.setUserEmail(preferences.getString(PREF_USER_EMAIL, null));
         user.setUserId(preferences.getInt(PREF_USER_ID, 0));
-
+        user.setUserPhoto(preferences.getString(PREF_USER_PHOTO, null));
         return user;
     }
 
@@ -123,6 +128,7 @@ public class UserManage {
         editor.remove(PREF_USER_NAME);
         editor.remove(PREF_USER_EMAIL);
         editor.remove(PREF_USER_ID);
+        editor.remove(PREF_USER_PHOTO);
         editor.commit();
     }
 
