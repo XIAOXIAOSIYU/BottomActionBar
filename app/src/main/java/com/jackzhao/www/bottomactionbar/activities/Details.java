@@ -177,7 +177,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                     try {
                         JSONObject image = (JSONObject) image_list.get(0);
                         String image_url = String.format(Common.APP_BUSINESS_IMAGE_SERVER_URL, image.getString("ImageName"));
-                        Common.ImageLoaderWithVolley(Details.this, company_details_main_image, image_url);
+                        Common.ImageLoaderWithVolley(Details.this, company_details_main_image, image_url,false);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -282,7 +282,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 _image.setId(i);
                 _image.setLayoutParams(params);
                 _image.requestLayout();
-                Common.ImageLoaderWithVolley(Details.this, _image, image_url);
+                Common.ImageLoaderWithVolley(Details.this, _image, image_url,false);
                 layout.addView(_image);
 
             } catch (JSONException e) {

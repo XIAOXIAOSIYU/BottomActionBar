@@ -54,7 +54,7 @@ public class ReviewAdapter {
             try {
                 review = (JSONObject) this.jsonArray.get(i);
                 String image_url = String.format(Common.APP_USER_IMAGE_SERVER_URL, review.getString("UserID"));
-                Common.ImageLoaderWithVolley(context, user_photo, image_url);
+                Common.ImageLoaderWithVolley(context, user_photo, image_url,false);
 
                 String post_date = review.getString("PublishTime");
 

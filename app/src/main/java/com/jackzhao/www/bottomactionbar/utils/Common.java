@@ -1,5 +1,6 @@
 package com.jackzhao.www.bottomactionbar.utils;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +8,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Build;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
+import android.support.annotation.RequiresApi;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -27,21 +34,31 @@ public class Common {
     public static final String APP_USER_IMAGE_SERVER_URL = "http://img.iccyp.com/hizo/users/%1$s.jpg";
 
     public static final int MY_SOCKET_TIMEOUT_MS = 5000;
+    private static final float BITMAP_SCALE = 0.4f;
+    private static final float BLUR_RADIUS = 7.5f;
 
-
-    public static void ImageLoaderWithVolley(final Context context, final ImageView image_view, String image_url) {
+    public static void ImageLoaderWithVolley(final Context context, final ImageView image_view, String image_url, final boolean blured) {
 
         ImageLoader imageLoader = AppSingleton.getInstance(context).getImageLoader();
         imageLoader.get(image_url, new ImageLoader.ImageListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                image_view.setImageBitmap(response.getBitmap());
+
+                Bitmap bitmap = response.getBitmap();
+                if (bitmap != null && blured) {
+                    image_view.setImageBitmap(BlurImages(context, bitmap));
+                } else {
+                    image_view.setImageBitmap(bitmap);
+                }
+
             }
 
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onErrorResponse(VolleyError error) {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.imageholder);
-                image_view.setImageBitmap(bitmap);
+                image_view.setImageBitmap((blured) ? BlurImages(context, bitmap) : bitmap);
             }
         });
     }
@@ -67,4 +84,28 @@ public class Common {
         drawable.getPaint().setColor(Color.parseColor("#abcd123"));
         return drawable;
     }
+
+//    https://futurestud.io/tutorials/how-to-blur-images-efficiently-with-androids-renderscript
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static Bitmap BlurImages(Context context, Bitmap image) {
+        int width = Math.round(image.getWidth() * BITMAP_SCALE);
+        int height = Math.round(image.getHeight() * BITMAP_SCALE);
+
+        Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+        Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+
+        RenderScript rs = RenderScript.create(context);
+        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+        Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+        theIntrinsic.setRadius(BLUR_RADIUS);
+        theIntrinsic.setInput(tmpIn);
+        theIntrinsic.forEach(tmpOut);
+        tmpOut.copyTo(outputBitmap);
+
+        return outputBitmap;
+    }
+
 }

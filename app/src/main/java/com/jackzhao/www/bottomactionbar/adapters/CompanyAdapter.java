@@ -64,7 +64,7 @@ public class CompanyAdapter extends BaseAdapter {
             ImageView img_details = (ImageView) listview.findViewById(R.id.img_company_rows_details);
 
             String company_image_url = String.format(Common.APP_BUSINESS_IMAGE_SERVER_URL, company.getString("ImageURL"));
-            Common.ImageLoaderWithVolley(context, company_image, company_image_url);
+            Common.ImageLoaderWithVolley(context, company_image, company_image_url,false);
 
             String company_name = company.getString("CName");
             String company_ename = company.getString("EName");
