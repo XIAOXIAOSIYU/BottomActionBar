@@ -34,7 +34,15 @@
         <activity android:name=".components.listview_item_company" />
         <activity android:name=".activities.Details" />
         <activity android:name=".components.company_details_reviews_item" />
-        <activity android:name=".activities.UserCenter"></activity>
+        <activity android:name=".activities.UserCenter" />
+        <activity
+            android:name=".activities.UserPhotos"
+            android:label="@string/title_activity_user_photos"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.UserReviews"
+            android:label="@string/title_activity_user_reviews"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

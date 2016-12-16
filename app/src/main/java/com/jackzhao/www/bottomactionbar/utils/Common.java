@@ -73,7 +73,6 @@ public class Common {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
-
     }
 
     public static ShapeDrawable ImageCircled(int radius) {
