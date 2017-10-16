@@ -21,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.jackzhao.www.bottomactionbar.R;
 
+import java.util.HashMap;
+
 public class Common {
 
     public static final String TAG = "JACK_TAG";
@@ -67,11 +69,16 @@ public class Common {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    public static void CommonStartActivity(Context context, Class<?> activity) {
+    public static void CommonStartActivity(Context context, Class<?> activity, HashMap<String, Object> parameters) {
 
         Intent intent = new Intent(context, activity);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (parameters != null) {
+            for (String key : parameters.keySet()) {
+                intent.putExtra(key, String.valueOf(parameters.get(key)));
+            }
+        }
         context.startActivity(intent);
     }
 

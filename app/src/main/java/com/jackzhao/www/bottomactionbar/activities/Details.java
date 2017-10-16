@@ -35,6 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
+import static com.jackzhao.www.bottomactionbar.utils.Common.BOUNDLE_COMPANY_ID;
+
 public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
     private ImageView company_details_main_image;
@@ -45,14 +49,12 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ProgressDialog dialog;
+    private int company_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_details);
-
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_company_details);
-        //setSupportActionBar(toolbar);
 
         company_details_main_image = (ImageView) findViewById(R.id.img_company_details_main_image);
         company_details_main_image.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -101,8 +103,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
         Bundle data = getIntent().getExtras();
         if (data != null) {
-            if (data.containsKey(Common.BOUNDLE_COMPANY_ID)) {
-                int company_id = data.getInt(Common.BOUNDLE_COMPANY_ID);
+            if (data.containsKey(BOUNDLE_COMPANY_ID)) {
+                company_id = data.getInt(BOUNDLE_COMPANY_ID);
                 String company_images_url = String.format(Common.WSDL_COMPANY_IMAGE_LIST, company_id);
                 String company_details_url = String.format(Common.WSDL_COMPANY_DETAILS, company_id);
                 String company_review_url = String.format(Common.WSDL_COMPANY_REVIEW_LIST, company_id);
@@ -177,7 +179,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                     try {
                         JSONObject image = (JSONObject) image_list.get(0);
                         String image_url = String.format(Common.APP_BUSINESS_IMAGE_SERVER_URL, image.getString("ImageName"));
-                        Common.ImageLoaderWithVolley(Details.this, company_details_main_image, image_url,false);
+                        Common.ImageLoaderWithVolley(Details.this, company_details_main_image, image_url, false);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -282,7 +284,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
                 _image.setId(i);
                 _image.setLayoutParams(params);
                 _image.requestLayout();
-                Common.ImageLoaderWithVolley(Details.this, _image, image_url,false);
+                Common.ImageLoaderWithVolley(Details.this, _image, image_url, false);
                 layout.addView(_image);
 
             } catch (JSONException e) {
@@ -324,4 +326,9 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
+    public void showMoreImage(View view) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(BOUNDLE_COMPANY_ID, company_id);
+        Common.CommonStartActivity(Details.this, CompanyImageGallery.class, params);
+    }
 }

@@ -42,7 +42,8 @@
         <activity
             android:name=".activities.UserReviews"
             android:label="@string/title_activity_user_reviews"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activities.CompanyImageGallery"></activity>
     </application>
 
 </manifest>

@@ -23,7 +23,7 @@ public class User extends AppCompatActivity {
 
         user = new UserManage(this);
         if (user.CheckUserLogged()) {
-            Common.CommonStartActivity(User.this, UserCenter.class);
+            Common.CommonStartActivity(User.this, UserCenter.class,null);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_login);

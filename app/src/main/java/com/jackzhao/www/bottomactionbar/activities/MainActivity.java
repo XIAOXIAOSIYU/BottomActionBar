@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(3000);
-                    Common.CommonStartActivity(getApplicationContext(), Home.class);
+                    Common.CommonStartActivity(getApplicationContext(), Home.class,null);
                     finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -271,7 +271,8 @@
                         android:layout_weight="2"
                         android:text="查看更多"
                         android:textColor="#999"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:onClick="showMoreImage"/>
 
                     <TextView
                         android:id="@+id/imageView3"

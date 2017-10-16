@@ -49,6 +49,6 @@ public class UserCenter extends AppCompatActivity {
 
     public void userLogout(View view) {
         userManage.SetUserLogOut();
-        Common.CommonStartActivity(this, com.jackzhao.www.bottomactionbar.activities.User.class);
+        Common.CommonStartActivity(this, com.jackzhao.www.bottomactionbar.activities.User.class,null);
     }
 }
